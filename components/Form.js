@@ -7,7 +7,7 @@ import Web3 from "web3";
 
 import { toast } from "react-toastify";
 
-function Form({ account, info }) {
+function Form({ info, account, accountBalance }) {
   const web3 = new Web3();
   const ChainId = config.polygon.ChainConfig.chainId;
   const ChainName = config.polygon.ChainConfig.chainName;
@@ -20,7 +20,7 @@ function Form({ account, info }) {
 
   const [amount, setAmount] = useState("100");
   const [timeString, setsetTimeString] = useState("week");
-  const [approveAmount, setApproveAmount] = useState(null);
+  const [approveAmount, setApproveAmount] = useState("100");
 
   useEffect(() => {
     (async () => {
@@ -97,7 +97,19 @@ function Form({ account, info }) {
           {approveAmount >= amount ? (
             <button
               onClick={async () => {
-                console.log(timeString, amount, approveAmount);
+                if (!window.ethereum) {
+                  toast.error("Please install metamask!");
+                  return;
+                }
+                if (
+                  (await window.ethereum.request({
+                    method: "eth_chainId",
+                  })) != ChainId
+                ) {
+                  switchNetwork(ChainId, ChainName);
+                  return;
+                }
+
                 await info.contract
                   .staking(amount, timeString)
                   .then(async (txn) => {
@@ -114,8 +126,31 @@ function Form({ account, info }) {
             </button>
           ) : (
             <button
-              onClick={() => {
-                console.log(timeString, amount, approveAmount);
+              onClick={async () => {
+                if (!window.ethereum) {
+                  toast.error("Please install metamask!");
+                  return;
+                }
+                if (
+                  (await window.ethereum.request({
+                    method: "eth_chainId",
+                  })) != ChainId
+                ) {
+                  switchNetwork(ChainId, ChainName);
+                  return;
+                }
+                if (accountBalance < amount) {
+                  toast.error("Low BUSD Balance!");
+                  return;
+                }
+
+                await info.tokenContract
+                  .approve(address, "472834703274230749327532")
+                  .then(async (txn) => {
+                    let tx = await txn.wait();
+                    toast.success("Approving BUSD Successful");
+                  })
+                  .catch((e) => toast.error(e.message));
               }}
               className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
               type="button"

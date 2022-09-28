@@ -78,7 +78,7 @@ export default function Home() {
         ...info,
         contract: contract,
         stakes: stakes,
-        TokenContract: TokenContract,
+        tokenContract: TokenContract,
       });
     }
   };
@@ -143,7 +143,11 @@ export default function Home() {
         </div>
         {account && (
           <div>
-            <Form info={info} account={account} />
+            <Form
+              info={info}
+              account={account}
+              accountBalance={accountBalance}
+            />
           </div>
         )}
         {account && (

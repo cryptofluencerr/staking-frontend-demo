@@ -7,7 +7,7 @@ import Card from "../components/Card";
 
 import { getAccounts, switchNetwork } from "../components/Web3Func";
 
-import Web3Modal from "web3Modal";
+import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import Web3 from "web3";
 

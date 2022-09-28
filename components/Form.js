@@ -116,6 +116,9 @@ function Form({ info, account, accountBalance }) {
                     let tx = await txn.wait();
                     console.log(tx);
                     toast.success("Staking Successful");
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 3000);
                   })
                   .catch((e) => toast.error(e.message));
               }}
@@ -149,6 +152,9 @@ function Form({ info, account, accountBalance }) {
                   .then(async (txn) => {
                     let tx = await txn.wait();
                     toast.success("Approving BUSD Successful");
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 3000);
                   })
                   .catch((e) => toast.error(e.message));
               }}

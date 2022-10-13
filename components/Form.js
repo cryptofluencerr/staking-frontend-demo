@@ -117,7 +117,7 @@ function Form({ info, account, accountBalance }) {
                     console.log(tx);
                     toast.success("Staking Successful");
                     setTimeout(() => {
-                      window.location.reload();
+                      router.push("/");
                     }, 3000);
                   })
                   .catch((e) => toast.error(e.message));

@@ -2,9 +2,11 @@ import React from "react";
 import Web3 from "web3";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { useRouter } from "next/router";
 
 function Card({ info }) {
   const web3 = new Web3();
+  const router = useRouter();
 
   return (
     <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
@@ -71,7 +73,7 @@ function Card({ info }) {
                             let tx = await txn.wait();
                             toast.success("Amount Released");
                             setTimeout(() => {
-                              window.location.reload();
+                              router.push("/");
                             }, 3000);
                           })
                           .catch((e) => toast.error(e.message));

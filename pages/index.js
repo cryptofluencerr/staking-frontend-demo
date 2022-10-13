@@ -6,6 +6,7 @@ import Form from "../components/Form";
 import Card from "../components/Card";
 
 import { getAccounts, switchNetwork } from "../components/Web3Func";
+import { useRouter } from "next/router";
 
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";

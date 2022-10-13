@@ -69,10 +69,7 @@ function Card({ info }) {
                           .release(i)
                           .then(async (txn) => {
                             let tx = await txn.wait();
-                            console.log(e);
-
                             toast.success("Amount Released");
-
                             setTimeout(() => {
                               window.location.reload();
                             }, 3000);

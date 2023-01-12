@@ -47,6 +47,23 @@ export default function Home() {
     }
   }, []);
 
+  const connectWallet = async () => {
+    if (!window.ethereum) {
+      toast.error("Please install metamask!");
+      return;
+    }
+    if (
+      (await window.ethereum.request({
+        method: "eth_chainId",
+      })) != ChainId
+    ) {
+      switchNetwork(ChainId, ChainName);
+      return;
+    }
+    setAccount(await getAccounts());
+    minted();
+  };
+
   useEffect(() => {
     minted();
   }, [account]);
@@ -89,24 +106,7 @@ export default function Home() {
           <h1 className="font-bold text-2xl mb-2 ">Stake</h1>
           <div className="items-end text-end justify-end mr-20 mb-10">
             {!account ? (
-              <div
-                onClick={async () => {
-                  if (!window.ethereum) {
-                    toast.error("Please install metamask!");
-                    return;
-                  }
-                  if (
-                    (await window.ethereum.request({
-                      method: "eth_chainId",
-                    })) != ChainId
-                  ) {
-                    switchNetwork(ChainId, ChainName);
-                    return;
-                  }
-                  setAccount(await getAccounts());
-                  minted();
-                }}
-              >
+              <div onClick={connectWallet}>
                 <button className="cursor-pointer bg-orange-400 px-2 py-2 rounded-2xl">
                   Connect Wallet
                 </button>

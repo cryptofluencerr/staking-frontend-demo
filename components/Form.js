@@ -23,16 +23,44 @@ function Form({ info, account, accountBalance }) {
   const [approveAmount, setApproveAmount] = useState("100");
 
   useEffect(() => {
-    (async () => {
-      let provider = new ethers.providers.JsonRpcProvider(JSON_RPC);
-      let contract = new ethers.Contract(tokenAddress, tokenAbi, provider);
-      if (account) {
-        setApproveAmount(
-          (await contract.allowance(account, address)).toString()
-        );
-      }
-    })();
+    checkAllowance();
   }, [account]);
+
+  const checkAllowance = async () => {
+    let provider = new ethers.providers.JsonRpcProvider(JSON_RPC);
+    let contract = new ethers.Contract(tokenAddress, tokenAbi, provider);
+    if (account) {
+      setApproveAmount((await contract.allowance(account, address)).toString());
+    }
+  };
+
+  const approveFunc = async () => {
+    if (!window.ethereum) {
+      toast.error("Please install metamask!");
+      return;
+    }
+    if (
+      (await window.ethereum.request({
+        method: "eth_chainId",
+      })) != ChainId
+    ) {
+      switchNetwork(ChainId, ChainName);
+      return;
+    }
+    if (accountBalance < amount) {
+      toast.error("Low BUSD Balance!");
+      return;
+    }
+
+    await info.tokenContract
+      .approve(address, "472834703274230749327532")
+      .then(async (txn) => {
+        let tx = await txn.wait();
+        toast.success("Approving BUSD Successful");
+        checkAllowance();
+      })
+      .catch((e) => toast.error(e.message));
+  };
 
   return (
     <>
@@ -118,8 +146,8 @@ function Form({ info, account, accountBalance }) {
                       console.log(tx);
                       toast.success("Staking Successful");
                       setTimeout(() => {
-                        router.push("/");
-                      }, 3000);
+                        window.location.reload();
+                      }, 5000);
                     })
                     .catch((e) => toast.error(e.message));
                 }}
@@ -130,35 +158,7 @@ function Form({ info, account, accountBalance }) {
               </button>
             ) : (
               <button
-                onClick={async () => {
-                  if (!window.ethereum) {
-                    toast.error("Please install metamask!");
-                    return;
-                  }
-                  if (
-                    (await window.ethereum.request({
-                      method: "eth_chainId",
-                    })) != ChainId
-                  ) {
-                    switchNetwork(ChainId, ChainName);
-                    return;
-                  }
-                  if (accountBalance < amount) {
-                    toast.error("Low BUSD Balance!");
-                    return;
-                  }
-
-                  await info.tokenContract
-                    .approve(address, "472834703274230749327532")
-                    .then(async (txn) => {
-                      let tx = await txn.wait();
-                      toast.success("Approving BUSD Successful");
-                      setTimeout(() => {
-                        window.location.reload();
-                      }, 3000);
-                    })
-                    .catch((e) => toast.error(e.message));
-                }}
+                onClick={approveFunc}
                 className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                 type="button"
               >

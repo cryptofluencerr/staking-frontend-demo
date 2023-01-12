@@ -72,8 +72,8 @@ function Card({ info }) {
                           let tx = await txn.wait();
                           toast.success("Amount Released");
                           setTimeout(() => {
-                            router.push("/");
-                          }, 3000);
+                            window.location.reload();
+                          }, 5000);
                         })
                         .catch((e) => toast.error(e.message));
                     }}

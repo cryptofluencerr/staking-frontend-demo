@@ -1,24 +1,20 @@
 const config = {
   polygon: {
     ChainConfig: {
-      chainId: "0x13881",
-      chainName: "Mumbai Testnet",
+      chainId: "0x61",
+      chainName: "BSC Testnet",
       nativeCurrency: {
-        name: "MATIC",
-        symbol: "MATIC",
+        name: "BNB",
+        symbol: "BNB",
         decimals: 18,
       },
-      rpcUrls: ["https://matic-mumbai.chainstacklabs.com"],
-      blockExplorerUrls: ["https://mumbai.polygonscan.com"],
+      rpcUrls: ["https://data-seed-prebsc-1-s3.binance.org:8545/"],
+      blockExplorerUrls: ["https://testnet.bscscan.com"],
     },
     StakingContract: {
-      address: "0x7074d2e7A37dcC10e9A6066634F4177CF5853077",
+      address: "0xb0156fBE75b5f0B010a07855f0B274eaF6826293",
       abi: [
-        {
-          inputs: [{ internalType: "address", name: "BUSD", type: "address" }],
-          stateMutability: "nonpayable",
-          type: "constructor",
-        },
+        { inputs: [], stateMutability: "nonpayable", type: "constructor" },
         {
           anonymous: false,
           inputs: [
@@ -279,11 +275,7 @@ const config = {
           inputs: [{ internalType: "string", name: "", type: "string" }],
           name: "StakingDuration",
           outputs: [
-            {
-              internalType: "uint256",
-              name: "stakeDuration",
-              type: "uint256",
-            },
+            { internalType: "uint256", name: "stakeDuration", type: "uint256" },
             { internalType: "uint8", name: "stakePercentage", type: "uint8" },
           ],
           stateMutability: "view",
@@ -439,26 +431,10 @@ const config = {
                   name: "amountTotal",
                   type: "uint256",
                 },
-                {
-                  internalType: "uint256",
-                  name: "startTime",
-                  type: "uint256",
-                },
-                {
-                  internalType: "uint256",
-                  name: "duration",
-                  type: "uint256",
-                },
-                {
-                  internalType: "uint256",
-                  name: "released",
-                  type: "uint256",
-                },
-                {
-                  internalType: "string",
-                  name: "timeString",
-                  type: "string",
-                },
+                { internalType: "uint256", name: "startTime", type: "uint256" },
+                { internalType: "uint256", name: "duration", type: "uint256" },
+                { internalType: "uint256", name: "released", type: "uint256" },
+                { internalType: "string", name: "timeString", type: "string" },
                 { internalType: "uint256", name: "reward", type: "uint256" },
               ],
               internalType: "struct Staking.StakingSchedule[]",
@@ -546,7 +522,7 @@ const config = {
       ],
     },
     TokenContract: {
-      address: "0x56a07441fd5cafeD9e0D45dc9D82931bFCd75E3A",
+      address: "0x5f334FE815B5bA0238d62C0fd4B1271736c267F2",
       abi: [
         { inputs: [], stateMutability: "nonpayable", type: "constructor" },
         {
@@ -576,6 +552,37 @@ const config = {
         },
         {
           anonymous: false,
+          inputs: [],
+          name: "DisabledAutoSwapAndLiquify",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [],
+          name: "EnabledAutoSwapAndLiquify",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "previousMinSwap",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "currentMinSwap",
+              type: "uint256",
+            },
+          ],
+          name: "MinTokensBeforeSwapUpdated",
+          type: "event",
+        },
+        {
+          anonymous: false,
           inputs: [
             {
               indexed: true,
@@ -591,6 +598,57 @@ const config = {
             },
           ],
           name: "OwnershipTransferred",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "Paused",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "address",
+              name: "_routerAddress",
+              type: "address",
+            },
+          ],
+          name: "SetRouterAddress",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "tokensSwapped",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "ethReceived",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "tokensIntoLiqudity",
+              type: "uint256",
+            },
+          ],
+          name: "SwapAndLiquify",
           type: "event",
         },
         {
@@ -619,24 +677,23 @@ const config = {
           type: "event",
         },
         {
-          inputs: [],
-          name: "_decimals",
-          outputs: [{ internalType: "uint8", name: "", type: "uint8" }],
-          stateMutability: "view",
-          type: "function",
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "Unpaused",
+          type: "event",
         },
         {
           inputs: [],
-          name: "_name",
-          outputs: [{ internalType: "string", name: "", type: "string" }],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "_symbol",
-          outputs: [{ internalType: "string", name: "", type: "string" }],
-          stateMutability: "view",
+          name: "Withdraw",
+          outputs: [],
+          stateMutability: "nonpayable",
           type: "function",
         },
         {
@@ -673,7 +730,17 @@ const config = {
             { internalType: "uint256", name: "amount", type: "uint256" },
           ],
           name: "burn",
-          outputs: [{ internalType: "bool", name: "", type: "bool" }],
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            { internalType: "address", name: "account", type: "address" },
+            { internalType: "uint256", name: "amount", type: "uint256" },
+          ],
+          name: "burnFrom",
+          outputs: [],
           stateMutability: "nonpayable",
           type: "function",
         },
@@ -699,13 +766,6 @@ const config = {
           type: "function",
         },
         {
-          inputs: [],
-          name: "getOwner",
-          outputs: [{ internalType: "address", name: "", type: "address" }],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
           inputs: [
             { internalType: "address", name: "spender", type: "address" },
             { internalType: "uint256", name: "addedValue", type: "uint256" },
@@ -717,10 +777,11 @@ const config = {
         },
         {
           inputs: [
+            { internalType: "address", name: "to", type: "address" },
             { internalType: "uint256", name: "amount", type: "uint256" },
           ],
           name: "mint",
-          outputs: [{ internalType: "bool", name: "", type: "bool" }],
+          outputs: [],
           stateMutability: "nonpayable",
           type: "function",
         },
@@ -735,6 +796,20 @@ const config = {
           inputs: [],
           name: "owner",
           outputs: [{ internalType: "address", name: "", type: "address" }],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "pause",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "paused",
+          outputs: [{ internalType: "bool", name: "", type: "bool" }],
           stateMutability: "view",
           type: "function",
         },
@@ -761,7 +836,7 @@ const config = {
         },
         {
           inputs: [
-            { internalType: "address", name: "recipient", type: "address" },
+            { internalType: "address", name: "to", type: "address" },
             { internalType: "uint256", name: "amount", type: "uint256" },
           ],
           name: "transfer",
@@ -771,8 +846,8 @@ const config = {
         },
         {
           inputs: [
-            { internalType: "address", name: "sender", type: "address" },
-            { internalType: "address", name: "recipient", type: "address" },
+            { internalType: "address", name: "from", type: "address" },
+            { internalType: "address", name: "to", type: "address" },
             { internalType: "uint256", name: "amount", type: "uint256" },
           ],
           name: "transferFrom",
@@ -789,6 +864,14 @@ const config = {
           stateMutability: "nonpayable",
           type: "function",
         },
+        {
+          inputs: [],
+          name: "unpause",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        { stateMutability: "payable", type: "receive" },
       ],
     },
   },

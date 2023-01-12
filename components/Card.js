@@ -35,58 +35,56 @@ function Card({ info }) {
           </tr>
         </thead>
         {info.stakes &&
-          info.stakes.map((stake, i) => {
-            return (
-              <tbody key={stake.tokenId}>
-                <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700 text-center">
-                  <th
-                    scope="row"
-                    className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          info.stakes.map((stake, i) => (
+            <tbody key={stake.tokenId}>
+              <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700 text-center">
+                <th
+                  scope="row"
+                  className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                >
+                  {stake.tokenId.toString()}
+                </th>
+                <td className="py-4 px-6">
+                  {" "}
+                  {moment.unix(stake.startTime.toString()).format("llll")}
+                </td>
+                <td className="py-4 px-6">
+                  {" "}
+                  {moment.unix(stake.duration.toString()).format("llll")}
+                </td>
+                <td className="py-4 px-6">
+                  {web3.utils.fromWei(stake.amountTotal.toString(), "ether")}{" "}
+                  {/* {new Date(stake.duration.toString() * 1000)} */}
+                </td>
+                <td className="py-4 px-6">
+                  {web3.utils.fromWei(stake.released.toString(), "ether")}
+                </td>
+                <td className="py-4 px-6">
+                  {web3.utils.fromWei(stake.amountTotal.toString(), "ether") -
+                    web3.utils.fromWei(stake.released.toString(), "ether")}
+                </td>
+                <td className="py-4 px-6">
+                  <button
+                    onClick={async () => {
+                      await info.contract
+                        .release(i)
+                        .then(async (txn) => {
+                          let tx = await txn.wait();
+                          toast.success("Amount Released");
+                          setTimeout(() => {
+                            router.push("/");
+                          }, 3000);
+                        })
+                        .catch((e) => toast.error(e.message));
+                    }}
+                    className="font-medium text-white dark:text-white bg-blue-600 px-2 py-2 rounded-2xl"
                   >
-                    {stake.tokenId.toString()}
-                  </th>
-                  <td className="py-4 px-6">
-                    {" "}
-                    {moment.unix(stake.startTime.toString()).format("llll")}
-                  </td>
-                  <td className="py-4 px-6">
-                    {" "}
-                    {moment.unix(stake.duration.toString()).format("llll")}
-                  </td>
-                  <td className="py-4 px-6">
-                    {web3.utils.fromWei(stake.amountTotal.toString(), "ether")}{" "}
-                    {/* {new Date(stake.duration.toString() * 1000)} */}
-                  </td>
-                  <td className="py-4 px-6">
-                    {web3.utils.fromWei(stake.released.toString(), "ether")}
-                  </td>
-                  <td className="py-4 px-6">
-                    {web3.utils.fromWei(stake.amountTotal.toString(), "ether") -
-                      web3.utils.fromWei(stake.released.toString(), "ether")}
-                  </td>
-                  <td className="py-4 px-6">
-                    <button
-                      onClick={async () => {
-                        await info.contract
-                          .release(i)
-                          .then(async (txn) => {
-                            let tx = await txn.wait();
-                            toast.success("Amount Released");
-                            setTimeout(() => {
-                              router.push("/");
-                            }, 3000);
-                          })
-                          .catch((e) => toast.error(e.message));
-                      }}
-                      className="font-medium text-white dark:text-white bg-blue-600 px-2 py-2 rounded-2xl"
-                    >
-                      Release Amount
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            );
-          })}
+                    Release Amount
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          ))}
       </table>
     </div>
   );

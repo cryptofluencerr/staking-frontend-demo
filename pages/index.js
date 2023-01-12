@@ -113,7 +113,7 @@ export default function Home() {
               </div>
             ) : (
               <div>
-                {account}
+                {account && account}
                 <button
                   onClick={() => {
                     setInfo({ info: null, contract: null });
